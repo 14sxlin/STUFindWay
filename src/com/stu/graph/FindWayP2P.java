@@ -10,14 +10,14 @@ public class FindWayP2P {
 	private boolean[] been;
 	private int[] path;
 	private int[][] g ; 
-	private int start,end;
+	private int start;
 	private int n;
 	/**
 	 * 无向图的构造方式
 	 * @param wayPoints wayPoints中的点算的是直线距离
 	 */
-	public FindWayP2P(ArrayList<WayPoint> wayPoints,int start,int end) {
-		init(wayPoints.size(),start, end);
+	public FindWayP2P(ArrayList<WayPoint> wayPoints,int start) {
+		init(wayPoints.size(),start);
 		g = new int[n][n];
 		for( int i = 0; i<rslt.length; i++){
 			rslt[i] = INF;
@@ -36,22 +36,23 @@ public class FindWayP2P {
 			}
 	}
 	
-	public FindWayP2P(int[][] g,int start,int end) {
-		init(g.length,start, end);
+	public FindWayP2P(int[][] g,int start) {
+		init(g.length,start);
 		this.g= g;
 		
 	}
 	
-	private void init(int n ,int start,int end){
+	private void init(int n ,int start){
 		this.n = n;
 		this.start = start;
-		this.end = end;
 		rslt = new int[n];
 		been = new boolean[n];
 		path = new int[n];
+		assert n==rslt.length;
 		for( int i = 0; i<rslt.length; i++){
 			rslt[i] = INF;
 			been[i] = false;
+			path[i] = -1;
 		}
 	}
 	
@@ -91,12 +92,12 @@ public class FindWayP2P {
 		}
 	}
 	
-	public ArrayList<Integer> getPathList( int end){
+	public ArrayList<Integer> getPathList(int end){
 		Stack<Integer> s = new Stack<Integer>();
 		ArrayList<Integer> list = new ArrayList<>();
 		list.add(start);
 		int current = end;
-		while(current!=start)
+		while(current!=start&&current!=-1)
 		{
 			s.push(current);
 			current = path[current];
@@ -113,7 +114,7 @@ public class FindWayP2P {
 		String str = "";
 		for(int i:path)
 			str+=""+i+"  ";
-		str+="   length : "+rslt[end]+"\n";
+//		str+="   length : "+rslt[end]+"\n";
 		return str;
 	}
 

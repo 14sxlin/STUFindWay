@@ -73,16 +73,22 @@ public class TestStuWayPointManager {
 		assertEquals(exp, readData.toString());
 	}
 	
-	/*
 	@Test
 	public void 整理数组(){
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
 		stuwp.calculateDis(avaliable);
 		System.out.println(stuwp.toString());
-		txtManager.writeObject(stuwp);
+//		txtManager.writeObject(stuwp);
 		
 	}
-	*/
+	
+	@Test
+	public void testFindShortestIndex(){
+		txtManager = new ObjectTXTManager("waypointmodel.data");
+		stuwp = (StuWayPointManager) txtManager.readObject();
+		int start = stuwp.findShortestWayPoint(new Point(590,400));
+		assertEquals(1, start);
+	}
 
 }

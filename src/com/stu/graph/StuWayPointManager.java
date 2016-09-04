@@ -44,21 +44,23 @@ public class StuWayPointManager implements Serializable{
 	
 	/**
 	 * 获取路径点中与指定路径点直线距离最短的路径点
-	 * @param wayPoint 指定的点
-	 * @return
+	 * @param point 指定的点
+	 * @return 最短距离的点的序号
 	 */
-	public WayPoint findShortestWayPoint(Point point){
+	public int findShortestWayPoint(Point point){
 		if(wayPointList==null||wayPointList.size()==0)
-			return null;
+			return -1;
 		int length = Point.lengthOf(point, wayPointList.get(0));
-		WayPoint min = wayPointList.get(0);
-		for(WayPoint temp:wayPointList)
+		int min = 0;
+		int count = 0;
+		for(;count<wayPointList.size();)
 		{
-			if(Point.lengthOf(point, temp)<length)
+			if(Point.lengthOf(point, wayPointList.get(count))<length)
 			{
-				length = Point.lengthOf(point, temp);
-				min = temp;
+				length = Point.lengthOf(point, wayPointList.get(count));
+				min = count;
 			}
+			count++;
 		}
 		return min;
 	}

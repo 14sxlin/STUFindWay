@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import com.stu.database.ObjectTXTManager;
 
+@Deprecated
 @SuppressWarnings("serial")
 public class TestBarrierDropCanvas extends JFrame {
 
@@ -32,6 +33,7 @@ public class TestBarrierDropCanvas extends JFrame {
 		btnPanel.add(finishBtn);
 		btnPanel.add(writeBtn);
 		this.add(btnPanel,"South");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args) {

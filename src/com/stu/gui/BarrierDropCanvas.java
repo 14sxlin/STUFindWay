@@ -19,7 +19,7 @@ public class BarrierDropCanvas extends MapDisplayCanvas {
 	
 	public BarrierDropCanvas(String pathInJar) {
 		super(pathInJar);
-		barrierGenerator = new BarrierGenerator(getImwidthScaled(), getImheightScaled());
+		barrierGenerator = new BarrierGenerator(-10, -10);
 		this.removeMouseListener(clickListener);
 		this.addMouseListener(ba_clickListener = new MouseListener() {
 			
@@ -31,7 +31,7 @@ public class BarrierDropCanvas extends MapDisplayCanvas {
 				drawBarrier();
 				for(int i = minX; i<=maxX; i++)
 					for(int j = minY; j<=maxY; j++)
-						barrierGenerator.dropBarrier(i/getScale(), j/getScale());
+						barrierGenerator.dropBarrier(i/10, j/10);
 				
 			}
 			

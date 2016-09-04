@@ -2,21 +2,22 @@ package com.stu.gui;
 
 import java.awt.BorderLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.Place;
@@ -24,7 +25,7 @@ import com.stu.graph.Point;
 import com.stu.graph.StuWayPointManager;
 import com.stu.graph.WayPoint;
 
-public class WayPointManagePanel extends JPanel {
+public class WayPointManagePanel extends JPanel implements ActionListener,ChangeListener{
 
 	/**
 	 * 
@@ -35,17 +36,17 @@ public class WayPointManagePanel extends JPanel {
 	private static final int WAIT_MODE = 5;
 	private String fileName;
 	private int mode = ORIGIN_MODE;
-	private int count = 0;
+	private int count = 0;				//	当前标注在地图中的路径点的数目
 	private StuWayPointManager stuWpManager;
 	private ObjectTXTManager objTxtManager;
 	
 	private JLabel msgLabel;
-	private JButton addBtn,cancelBtn,saveBtn,clearBtn,deleteBtn;
+	private JButton addBtn,saveBtn,clearBtn,loadBtn;
 	private JList<String> wayPointList;
 	private DefaultListModel<String> listModel;
 	private MapDisplayCanvas canvas;
-	private Point currentPoint ;
-	private WayPoint currentWayPoint ;
+//	private Point currentPoint ;
+//	private WayPoint currentWayPoint ;
 	private Place currentPlace ;
 	private JRadioButton wayPointRadio,placeRadio;
 	
@@ -114,47 +115,18 @@ public class WayPointManagePanel extends JPanel {
 		JPanel btnPanel  = new JPanel();
 		btnPanel.add(msgLabel);
 		addBtn = new JButton("添加路径点");
-		addBtn.addActionListener(e->{
-			if(mode==WAIT_MODE)
-			{	/*//TODO 
-				stuWpManager.addWayPoint(currentWayPoint);
-				if(listModel==null)
-					listModel = new DefaultListModel<>();
-				listModel.addElement(currentPlace.toString());
-				wayPointList.setModel(listModel);*/
-			}else if(mode==MapDisplayCanvas.MODE_ADDPOINTS)
-			{
-				for(WayPoint p:stuWpManager.getWayPointList())
-				{
-					if(listModel==null)
-						listModel = new DefaultListModel<>();
-					listModel.addElement(p.toString());
-					wayPointList.setModel(listModel);
-				}
-			}
-		});
-		cancelBtn = new JButton("重置地图");
-		cancelBtn.addActionListener(e->{
-			canvas.clear();
-		});
 		saveBtn = new JButton("保存");
-		saveBtn.addActionListener(e->{
-			if(objTxtManager == null)
-			{
-				objTxtManager = new ObjectTXTManager(fileName);
-			}else{
-				objTxtManager.writeObject(stuWpManager);
-			}
-		});
-		clearBtn = new JButton("清空列表");
-		clearBtn.addActionListener(e->{
-			stuWpManager.clearWayPoint();
-			listModel.removeAllElements();
-			count = 0;
-		});
+		clearBtn = new JButton("清空所有数据");
+		loadBtn = new JButton("读取路径点");
+		
+		addBtn.addActionListener(this);
+		saveBtn.addActionListener(this);
+		clearBtn.addActionListener(this);
+		loadBtn.addActionListener(this);
+		
 		btnPanel.add(addBtn);
 		btnPanel.add(saveBtn);
-		btnPanel.add(cancelBtn);
+		btnPanel.add(loadBtn);
 		btnPanel.add(clearBtn);
 		
 		wayPointRadio = new JRadioButton("路径点");
@@ -163,6 +135,7 @@ public class WayPointManagePanel extends JPanel {
 		ButtonGroup group = new ButtonGroup();
 		group.add(wayPointRadio);
 		group.add(placeRadio);
+		
 		btnPanel.add(wayPointRadio);
 		btnPanel.add(placeRadio);
 		wayPointRadio.addChangeListener(e->{
@@ -172,13 +145,22 @@ public class WayPointManagePanel extends JPanel {
 			mode = ORIGIN_MODE;
 		});
 		wayPointRadio.setSelected(true);
-		this.setLayout(new BorderLayout());
+		
+		
+//		JPanel rightPanel = new JPanel();
+//		rightPanel.setLayout(new BorderLayout());
+//		rightPanel.add(wayPointList, "Center");
+//		
+//		JPanel rightBottomPanel = new JPanel();
+		
+		
 		JSplitPane split = 
-				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, canvas, wayPointList);
+				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, canvas,wayPointList );
 		split.setDividerLocation(canvas.getImwidth()-200);
+		
+		this.setLayout(new BorderLayout());
 		this.add(split, "Center");
 		this.add(btnPanel, "South");
-		
 	}
 	
 	/**
@@ -197,6 +179,8 @@ public class WayPointManagePanel extends JPanel {
 			stuWpManager = (StuWayPointManager) objTxtManager.readObject();
 			for(WayPoint p:stuWpManager.getWayPointList())
 				listModel.addElement(p.toString());
+			canvas.setPoints(stuWpManager.getWayPointList());
+			count = listModel.getSize();
 		}
 		wayPointList.setModel(listModel);
 	}
@@ -212,6 +196,74 @@ public class WayPointManagePanel extends JPanel {
 
 	public WayPointManagePanel(LayoutManager arg0, boolean arg1) {
 		super(arg0, arg1);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch(e.getActionCommand()){
+			case "添加路径点":{
+				if(mode==WAIT_MODE)
+				{	/*//TODO 
+					stuWpManager.addWayPoint(currentWayPoint);
+					if(listModel==null)
+						listModel = new DefaultListModel<>();
+					listModel.addElement(currentPlace.toString());
+					wayPointList.setModel(listModel);*/
+				}else if(mode==MapDisplayCanvas.MODE_ADDPOINTS)
+				{
+					listModel.removeAllElements();
+					for(WayPoint p:stuWpManager.getWayPointList())
+					{
+						if(listModel==null)
+							listModel = new DefaultListModel<>();
+						listModel.addElement(p.toString());
+						wayPointList.setModel(listModel);
+					}
+				}
+				break;
+			}
+			case "保存":{
+				int choose = JOptionPane.showConfirmDialog(this, "确定要保存吗? 将会覆盖原来的数据,请做好备份");
+				if(choose!=JOptionPane.OK_OPTION)
+					return;
+				if(objTxtManager == null)
+				{
+					objTxtManager = new ObjectTXTManager(fileName);
+					objTxtManager.writeObject(stuWpManager);
+				}else{
+					objTxtManager.writeObject(stuWpManager);
+				}
+				break;
+			}
+			case "清空所有数据":{
+				stuWpManager.clearWayPoint();
+				listModel.removeAllElements();
+				canvas.clear();
+				count = 0;
+				break;
+			}
+			case "读取路径点":{
+				listModel.removeAllElements();
+				stuWpManager = (StuWayPointManager) objTxtManager.readObject();
+				for(WayPoint p:stuWpManager.getWayPointList())
+					listModel.addElement(p.toString());
+				wayPointList.setModel(listModel);
+				count = listModel.getSize();
+				canvas.setPoints(stuWpManager.getWayPointList());
+				canvas.repaint();
+				break;
+			}
+			case "":{
+				break;
+			}
+		}
+		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
