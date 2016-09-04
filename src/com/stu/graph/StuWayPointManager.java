@@ -12,11 +12,22 @@ public class StuWayPointManager implements Serializable{
 	
 	public static final int INF = 99999999;
 	private int dis[][];
+	private int available[][];
 	
 	private ArrayList<WayPoint> wayPointList;
 	
+	/**
+	 * @param avaliable 表示要不要计算距离  1 表示计算, 0表示别计算
+	 */
+	public StuWayPointManager(int[][] available) {
+		this();
+		this.available = available;
+	}
+	
 	public StuWayPointManager() {
 		wayPointList = new ArrayList<>();
+		int n  = wayPointList.size();
+		this.available  = new int[n][n];
 	}
 	
 	public void addWayPoint(WayPoint p){
@@ -24,10 +35,18 @@ public class StuWayPointManager implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param avaliable 表示要不要计算距离  1 表示计算, 0表示别计算
+	 * 还是要用available[][] ,要在构造函数中指定
+	 */
+	public void calculateDis(){
+		calculateDis(this.available);
+	}
+	
+	/**
+	 * 使用当前的available[][] 指定
+	 * @param avaliable
 	 */
 	public void calculateDis(int[][] avaliable){
+		this.available = avaliable;
 		int n = avaliable.length;
 		dis = new int[n][n];
 		for(int i = 0 ; i<n; i++)
@@ -89,6 +108,24 @@ public class StuWayPointManager implements Serializable{
 		return str;
 	}
 
+	/**
+	 * 通过距离矩阵获取可到达矩阵
+	 * @return 由01组成的可到达矩阵,0表示不可到达,1表示可以到达
+	 */
+	public int[][] getAvaliMatrix(){
+		int n = dis.length;
+		int[][] temp = new int[n][n];
+		for(int i = 0; i<n; i++)
+			for(int j = 0; j<n; j++)
+			{
+				if(dis[i][j]<INF)
+					temp[i][j] = 1;
+				else 
+					temp[i][j] = 0;
+			}
+		return temp;
+	}
+	
 	public ArrayList<WayPoint> getWayPointList() {
 		return wayPointList;
 	}
@@ -105,5 +142,14 @@ public class StuWayPointManager implements Serializable{
 		this.dis = dis;
 	}
 
+	
+	public int[][] getAvaliable() {
+		return available;
+	}
+
+	public void setAvaliable(int[][] avaliable) {
+		this.available = avaliable;
+	}
+	
 	
 }

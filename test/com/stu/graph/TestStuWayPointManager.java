@@ -14,7 +14,7 @@ public class TestStuWayPointManager {
 	private StuWayPointManager stuwp ; 
 	private String exp;
 	private ObjectTXTManager txtManager ;
-	private int[][] avaliable = {
+	private int[][] available = {
 		   //0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 			{0,1,0,0,0,0,0,0,0,0, 1, 0, 0, 0, 0, 0},//0
 			{0,0,1,0,0,0,1,0,0,0, 0, 0, 0, 0, 0, 0},//1
@@ -36,7 +36,7 @@ public class TestStuWayPointManager {
 	@Before
 	public void setUp() throws Exception {
 		txtManager = new ObjectTXTManager(fileName);
-		stuwp = new StuWayPointManager();
+		stuwp = new StuWayPointManager(available);
 		WayPoint p1 = new WayPoint(1, 1, "hello");
 		WayPoint p2 = new WayPoint(2, 2, "the");
 		WayPoint p3 = new WayPoint(3, 3, "new");
@@ -47,18 +47,18 @@ public class TestStuWayPointManager {
 		stuwp.addWayPoint(p4);
 		exp = stuwp.toString();
 		
-		for(int i = 0; i<avaliable.length; i++)
+		for(int i = 0; i<available.length; i++)
 		{
-			for(int j = i; j<avaliable.length; j++)
+			for(int j = i; j<available.length; j++)
 			{
-				avaliable[j][i] = avaliable[i][j] ; 
+				available[j][i] = available[i][j] ; 
 			}
 		}
 //		for(int i = 0; i<avaliable.length; i++)
 //		{
 //			for(int j = 0; j<avaliable.length; j++)
 //			{
-//				System.out.print(avaliable[i][j]+"  "); ; 
+//				System.out.print(available[i][j]+"  "); ; 
 //			}
 //			System.out.println();
 //		}
@@ -77,13 +77,14 @@ public class TestStuWayPointManager {
 	public void 整理数组(){
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
-		stuwp.calculateDis(avaliable);
+		stuwp.calculateDis();
 		System.out.println(stuwp.toString());
 //		txtManager.writeObject(stuwp);
 		
 	}
 	
 	@Test
+	@Ignore
 	public void testFindShortestIndex(){
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
