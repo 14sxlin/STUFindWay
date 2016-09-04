@@ -11,6 +11,7 @@ import com.stu.graph.BarrierGenerator;
 public class TestObjectTXTManager {
 
 	private ObjectTXTManager manager ;
+	@SuppressWarnings("deprecation")
 	private BarrierGenerator bg ;
 	
 	@Before

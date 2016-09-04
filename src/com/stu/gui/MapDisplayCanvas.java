@@ -38,42 +38,12 @@ public class MapDisplayCanvas extends Canvas {
 			image = ImageIO.read(getClass().getResourceAsStream(pathInJar));
 			imwidth = image.getWidth(this);
 			imheight = image.getHeight(this);
-			this.addMouseListener(clickListener = new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					clickAndDraw(e.getX(), e.getY());				
-				}
-			});
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	public MapDisplayCanvas(String pathInJar,int width,int height) {
 		try {
 			way = new ArrayList<>();
@@ -121,6 +91,7 @@ public class MapDisplayCanvas extends Canvas {
 	public MapDisplayCanvas() {
 		this(STUJPG_PATH);
 	}
+
 	public MapDisplayCanvas(int width,int height) {
 		this(STUJPG_PATH,width,height);
 	}
@@ -159,6 +130,7 @@ public class MapDisplayCanvas extends Canvas {
 		setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
 	}
 	
+	@Deprecated
 	private void clickAndDraw(int x,int y){
 		if(mode==MODE_SETSTARTPOINT){
 			drawBigStirng("S", x, y);
