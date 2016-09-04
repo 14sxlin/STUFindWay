@@ -91,7 +91,7 @@ public class FindWayP2P {
 		}
 	}
 	
-	public ArrayList<Integer> getPathList(int start , int end){
+	public ArrayList<Integer> getPathList( int end){
 		Stack<Integer> s = new Stack<Integer>();
 		ArrayList<Integer> list = new ArrayList<>();
 		list.add(start);
@@ -113,13 +113,6 @@ public class FindWayP2P {
 		String str = "";
 		for(int i:path)
 			str+=""+i+"  ";
-//		do
-//		{
-//			str+=path[i]+"  ";
-//			i = path[i];
-//			System.out.println(i);
-//		}while(i<=3);
-//		str+=path[i];
 		str+="   length : "+rslt[end]+"\n";
 		return str;
 	}

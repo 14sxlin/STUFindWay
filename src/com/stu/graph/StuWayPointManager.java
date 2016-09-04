@@ -10,6 +10,8 @@ public class StuWayPointManager implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static final int INF = 99999999;
+	private int dis[][];
 	
 	private ArrayList<WayPoint> wayPointList;
 	
@@ -17,8 +19,27 @@ public class StuWayPointManager implements Serializable{
 		wayPointList = new ArrayList<>();
 	}
 	
-	public void addWayPoint(WayPoint wayPoint){
-		wayPointList.add(wayPoint);
+	public void addWayPoint(WayPoint p){
+		wayPointList.add(p);
+	}
+	
+	/**
+	 * 
+	 * @param avaliable 表示要不要计算距离  1 表示计算, 0表示别计算
+	 */
+	public void calculateDis(int[][] avaliable){
+		int n = avaliable.length;
+		dis = new int[n][n];
+		for(int i = 0 ; i<n; i++)
+			for(int j = 0; j<n; j++)
+			{
+				if(avaliable[i][j]==1)
+				{
+					dis[i][j] = Point.lengthOf(wayPointList.get(i), wayPointList.get(j));
+				}else{
+					dis[i][j] = INF ;
+				}
+			}
 	}
 	
 	/**
@@ -42,12 +63,45 @@ public class StuWayPointManager implements Serializable{
 		return min;
 	}
 	
+	public void clearWayPoint(){
+		wayPointList.clear();
+	}
+	
 	@Override
 	public String toString() {
 		String str = "";
 		for(WayPoint p:wayPointList)
 			str+=" " + p.toString()+"\n";
+		if(dis!=null)
+			for(int i = 0; i<dis.length; i++)
+				{
+					for(int j = 0; j<dis.length; j++)
+					{
+						if(dis[i][j]==INF)
+							System.out.print("INF  "); 
+						else
+							System.out.print(dis[i][j]+"  "); ; 
+					}
+					System.out.println();
+				}
 		return str;
 	}
 
+	public ArrayList<WayPoint> getWayPointList() {
+		return wayPointList;
+	}
+
+	public void setWayPointList(ArrayList<WayPoint> wayPointList) {
+		this.wayPointList = wayPointList;
+	}
+
+	public int[][] getDis() {
+		return dis;
+	}
+
+	public void setDis(int[][] dis) {
+		this.dis = dis;
+	}
+
+	
 }

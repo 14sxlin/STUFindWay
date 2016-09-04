@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,37 +50,6 @@ public class MapDisplayCanvas extends Canvas {
 					.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 			imwidth = width;
 			imheight = height;
-			this.addMouseListener(clickListener = new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					clickAndDraw(e.getX(), e.getY());				
-				}
-			});
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,7 +114,13 @@ public class MapDisplayCanvas extends Canvas {
 		Graphics2D g = ((Graphics2D)getGraphics());
 		g.setColor(Color.red);
 		g.setStroke(new BasicStroke(2f));
-		g.setFont(new Font("Arial", Font.BOLD,30));
+		g.setFont(new Font("Arial", Font.BOLD,15));
+		g.drawString(str, x, y);
+	}
+	protected void drawRedStirng(String str,int x,int y){
+		Graphics2D g = ((Graphics2D)getGraphics());
+		g.setColor(Color.red);
+		g.setStroke(new BasicStroke(2f));
 		g.drawString(str, x, y);
 	}
 

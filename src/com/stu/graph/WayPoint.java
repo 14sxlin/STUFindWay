@@ -16,6 +16,10 @@ public class WayPoint extends Point {
 	public WayPoint(int x, int y) {
 		super(x, y);
 	}
+	
+	public WayPoint(Point p) {
+		super(p.x, p.y);
+	}
 
 	@Override
 	public String toString() {
