@@ -1,14 +1,8 @@
 package com.stu.gui;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.StuWayPointManager;
 import com.stu.graph.WayPoint;
-import com.stu.gui.AvaliableDialog;
 
 public class TestAvaliableDialog {
 
@@ -23,9 +17,12 @@ public class TestAvaliableDialog {
 		dialog = new AvaliableDialog(16, stuwp.getWayPointList(),stuwp.getAvaliable());
 		dialog.setVisible(true);
 		while(!dialog.isFinish())
-		{
-			System.out.println("waiting");
-		}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		ava = dialog.getAval();
 		System.out.println("Finish");
 		for(int i = 0; i<ava.length; i++)
@@ -37,8 +34,34 @@ public class TestAvaliableDialog {
 			System.out.println();
 		}
 	}
+	
+	public TestAvaliableDialog(int nothing){
+		txtManager = new ObjectTXTManager("waypointmodel.data");
+		stuwp = (StuWayPointManager) txtManager.readObject();
+		dialog = new AvaliableDialog(stuwp.getAvaliable());
+		while(!dialog.isFinish())
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		ava = AvaliableDialog.aval;
+		System.out.println("Finish");
+		for(int i = 0; i<ava.length; i++)
+		{
+			for(int j = 0; j<ava.length; j++)
+			{
+				System.out.print(""+ava[i][j]+"  ");
+			}
+			System.out.println();
+		}
+	}
+	
 	public static void main(String[] args) {
-		new TestAvaliableDialog();
+//		new TestAvaliableDialog();
+		new TestAvaliableDialog(1);
+		
 	}
 
 }

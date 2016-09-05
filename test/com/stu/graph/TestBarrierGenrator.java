@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
+@Deprecated
 public class TestBarrierGenrator {
 	private BarrierGenerator bg = new BarrierGenerator(3, 3);
 	private char exp[][] =

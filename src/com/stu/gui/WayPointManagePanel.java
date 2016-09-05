@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -41,7 +43,8 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 	private ObjectTXTManager objTxtManager;
 	
 	private JLabel msgLabel;
-	private JButton addBtn,saveBtn,clearBtn,loadBtn;
+	private JButton addBtn,saveBtn,clearBtn,loadBtn,showRouteBtn;
+	private JButton alterRouteBtn;
 	private JList<String> wayPointList;
 	private DefaultListModel<String> listModel;
 	private MapDisplayCanvas canvas;
@@ -49,6 +52,7 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 //	private WayPoint currentWayPoint ;
 	private Place currentPlace ;
 	private JRadioButton wayPointRadio,placeRadio;
+	private AvaliableDialog avaDialog;		//表示一个点可以直接直线达到哪些点
 	
 	public WayPointManagePanel() {
 		stuWpManager = new StuWayPointManager();
@@ -106,6 +110,8 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 					WayPoint wp = new WayPoint(e.getX(), e.getY());
 					wp.setName(""+count);
 					stuWpManager.addWayPoint(wp);
+					avaDialog = new AvaliableDialog(count, stuWpManager.getWayPointList(),stuWpManager.getAvaliable());
+					avaDialog.setVisible(true);
 					count++;
 				}
 					
@@ -118,16 +124,24 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 		saveBtn = new JButton("保存");
 		clearBtn = new JButton("清空所有数据");
 		loadBtn = new JButton("读取路径点");
+		showRouteBtn = new JButton("显示路线");
+		alterRouteBtn = new JButton("修改路线");
+		
 		
 		addBtn.addActionListener(this);
 		saveBtn.addActionListener(this);
 		clearBtn.addActionListener(this);
 		loadBtn.addActionListener(this);
+		showRouteBtn.addActionListener(this);
+		alterRouteBtn.addActionListener(this);
 		
 		btnPanel.add(addBtn);
 		btnPanel.add(saveBtn);
 		btnPanel.add(loadBtn);
 		btnPanel.add(clearBtn);
+		btnPanel.add(showRouteBtn);
+		btnPanel.add(alterRouteBtn);
+		
 		
 		wayPointRadio = new JRadioButton("路径点");
 		placeRadio = new JRadioButton("地点");
@@ -219,6 +233,19 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 						listModel.addElement(p.toString());
 						wayPointList.setModel(listModel);
 					}
+					int [][]ava = avaDialog.getAval();
+					if(AvaliableDialog.finish)
+						stuWpManager.setAvaliable(ava);
+					
+//					//TODO delete this
+//					for(int i = 0; i<ava.length; i++)
+//					{
+//						for(int j = 0; j<ava.length; j++)
+//						{
+//							System.out.print(""+ava[i][j]+"  ");
+//						}
+//						System.out.println();
+//					}
 				}
 				break;
 			}
@@ -229,10 +256,9 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 				if(objTxtManager == null)
 				{
 					objTxtManager = new ObjectTXTManager(fileName);
-					objTxtManager.writeObject(stuWpManager);
-				}else{
-					objTxtManager.writeObject(stuWpManager);
 				}
+				stuWpManager.calculateDis();
+				objTxtManager.writeObject(stuWpManager);
 				break;
 			}
 			case "清空所有数据":{
@@ -251,6 +277,23 @@ public class WayPointManagePanel extends JPanel implements ActionListener,Change
 				count = listModel.getSize();
 				canvas.setPoints(stuWpManager.getWayPointList());
 				canvas.repaint();
+				break;
+			}
+			case "显示路线":{
+				canvas.drawAvailRoute(stuWpManager.getWayPointList(), stuWpManager.getAvaliable());
+				break;
+			}
+			case "修改路线":{
+				avaDialog = new AvaliableDialog(stuWpManager.getAvaliable());
+				avaDialog.addPropertyChangeListener(new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						int [][]ava = avaDialog.getAval();
+						stuWpManager.setAvaliable(ava);
+						canvas.clear();
+					}
+				});
 				break;
 			}
 			case "":{

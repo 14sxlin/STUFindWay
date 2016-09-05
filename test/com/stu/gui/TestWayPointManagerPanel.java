@@ -26,7 +26,6 @@ public class TestWayPointManagerPanel extends JFrame{
 
 	public static void main(String[] args) {
 		new TestWayPointManagerPanel("waypointmodel.data").setVisible(true);
-
 	}
 
 }

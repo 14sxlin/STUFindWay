@@ -23,6 +23,8 @@ public class TestMapDIsplayCanvas extends JFrame {
 	private FindWayPoints findWay ;
 	private ObjectTXTManager objManager;
 	private FindWayP2P p2p ;
+	private Point clickStart,clickEnd;	//点击的起点,终点
+	private int start,end;				//路径中的起点,终点
 	
 	private StuWayPointManager stuWpManager;
 	
@@ -79,16 +81,24 @@ public class TestMapDIsplayCanvas extends JFrame {
 		this.setSize(canvas.getImwidth(),canvas.getImheight());
 		
 		JPanel btnPanel = new JPanel();
-		JButton findBtn = new JButton("找路");
-		findBtn.addActionListener(e->{
-		});
-		btnPanel.add(findBtn);
+		
+		
 		JButton clearBtn = new JButton("清空");
 		clearBtn.addActionListener(e->{
 			canvas.clear();
 		});
 		btnPanel.add(clearBtn);
+		
+		
+		JButton showPathBtn = new JButton("显示路径模型");
+		showPathBtn.addActionListener(e->{
+			canvas.drawAvailRoute(stuWpManager.getWayPointList(), stuWpManager.getAvaliable());
+		});
+		btnPanel.add(showPathBtn);
 		this.add(btnPanel, "South");
+		
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	
@@ -129,23 +139,34 @@ public class TestMapDIsplayCanvas extends JFrame {
 				switch(canvas.getMode())
 				{
 					case MapDisplayCanvas.MODE_SETSTARTPOINT:{
+						clickStart = new Point(e.getX(), e.getY());
 						canvas.drawBigStirng("S", e.getX(), e.getY());
 						canvas.setMode(MapDisplayCanvas.MODE_SETENDPOINT);
-						int start  = stuWpManager.findShortestWayPoint(new Point(e.getX(),e.getY()));
+						start  = stuWpManager.findShortestWayPoint(new Point(e.getX(),e.getY()));
 						System.out.println("start = "+start+" (x,y) = "+e.getX()+"  "+e.getY());
-						canvas.drawBigLine(new Point(e.getX(),e.getY()), stuWpManager.getWayPointList().get(start));
 						p2p = new FindWayP2P(stuWpManager.getDis(), start);
 						break;
 					}
 					case MapDisplayCanvas.MODE_SETENDPOINT:{
+						clickEnd = new Point(e.getX(), e.getY());
 						canvas.drawBigStirng("E", e.getX(), e.getY());
-						int end = stuWpManager.findShortestWayPoint(new Point(e.getX(),e.getY()));
+						if(Point.lengthOf(clickStart, clickEnd)<100)
+						{
+							canvas.drawBigLine(clickStart, clickEnd);
+							canvas.setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
+							return;
+						}
+						
+						end = stuWpManager.findShortestWayPoint(new Point(e.getX(),e.getY()));
 						p2p.findWay();
 						System.out.println("end = "+end);
+						
 						ArrayList<Integer> path = p2p.getPathList(end);
+						canvas.drawBigLine(clickStart, stuWpManager.getWayPointList().get(start));
 						canvas.drawBigLine(new Point(e.getX(),e.getY()), stuWpManager.getWayPointList().get(end));
-						System.out.println("path = "+path.toString());
 						canvas.drawResultLine(stuWpManager.getWayPointList(), path);
+						
+						System.out.println("path = "+path.toString());
 						canvas.setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
 						break;
 					}

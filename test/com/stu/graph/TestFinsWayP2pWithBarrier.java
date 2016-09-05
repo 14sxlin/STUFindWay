@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
+@Deprecated
 public class TestFinsWayP2pWithBarrier {
 
 	private FindWayP2PWithBarrier findway1;

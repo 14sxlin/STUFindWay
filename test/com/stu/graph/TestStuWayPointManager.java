@@ -74,6 +74,7 @@ public class TestStuWayPointManager {
 	}
 	
 	@Test
+	@Ignore
 	public void 整理数组(){
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();

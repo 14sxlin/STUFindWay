@@ -29,7 +29,7 @@ public class MapDisplayCanvas extends Canvas {
 	private int imwidth,imheight;
 	private Graphics2D g;
 	private ArrayList<? extends Point> points;	//初始化的时候要画如canvas的点
-	private ArrayList<Point> way; 		// 保存用户点击的点
+	private ArrayList<Point> way; 				// 保存用户点击的点
 	protected MouseListener clickListener;
 	
 	/**
@@ -145,7 +145,7 @@ public class MapDisplayCanvas extends Canvas {
 	}
 	
 	/**
-	 * 画线
+	 * 画线 粗细为3 刚刚好
 	 * @param p1
 	 * @param p2
 	 */
@@ -157,15 +157,41 @@ public class MapDisplayCanvas extends Canvas {
 	}
 	
 	/**
+	 * 画出路线模型
+	 * @param points 所有路径点
+	 * @param available 可到达数组,1表示可以直线到达,0表示不可以直线到达
+	 */
+	public void drawAvailRoute(ArrayList<WayPoint> points,int[][] available){
+		for(int i = 0; i<available.length; i++)
+			for(int j = i; j<available.length; j++)
+			{
+				if(available[i][j]==1)
+				{
+					drawBigLine(points.get(i), points.get(j));
+				}
+			}
+	}
+	
+	/**
 	 * 重置地图,清空保存的路径点
+	 * 保存的点是引用,所以清空的话也会清空外部的点,注意
+	 * 
+	 * 重置模式为起点模式
 	 */
 	public void clear(){
-		if(points!=null)
-			points.clear();
+//		if(points!=null)
+//			points.clear();
 		if(way!= null)
 			way.clear();
 		repaint();
 		setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
+	}
+	
+	/**
+	 * 清空画布但是不清空保存的点
+	 */
+	public void clearCanvas(){
+		
 	}
 	
 	@SuppressWarnings("unused")
@@ -232,8 +258,9 @@ public class MapDisplayCanvas extends Canvas {
 	public ArrayList<? extends Point> getPoints() {
 		return points;
 	}
+	@SuppressWarnings("unchecked")
 	public void setPoints(ArrayList<? extends Point > points) {
-		this.points = points;
+		this.points = (ArrayList<? extends Point>) points.clone();
 	}
 	
 	public int getMode() {

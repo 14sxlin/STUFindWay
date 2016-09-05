@@ -5,7 +5,6 @@ import static org.junit.Assert.assertArrayEquals;
 import java.util.ArrayList;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.stu.database.ObjectTXTManager;
@@ -26,7 +25,6 @@ public class TestFindWayP2P {
 	}
 
 	@Test
-	@Ignore
 	public void testFindWay1() {
 		p2p.findWay();
 		System.out.println(p2p.toString());
@@ -41,7 +39,6 @@ public class TestFindWayP2P {
 	}
 	
 	@Test
-	@Ignore
 	public void testFindWay2() {
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
@@ -61,6 +58,18 @@ public class TestFindWayP2P {
 		p2p.findWay();
 		System.out.println(wpManager.getWayPointList().toString());
 		System.out.println(p2p.getPathList(2));
+	}
+	
+	@Test
+	public void testBug0_16(){
+		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
+		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
+		System.out.println(wpManager.toString());
+		wpManager.calculateDis();
+		p2p = new FindWayP2P(wpManager.getDis(), 0);
+		p2p.findWay();
+		System.out.println(wpManager.getWayPointList().toString());
+		System.out.println(p2p.getPathList(16));
 	}
 
 	
