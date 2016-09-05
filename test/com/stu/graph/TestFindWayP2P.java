@@ -1,6 +1,6 @@
 package com.stu.graph;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -24,17 +24,19 @@ public class TestFindWayP2P {
 		p2p = new FindWayP2P(map, 0);
 	}
 
+	
+	
 	@Test
 	public void testFindWay1() {
 		p2p.findWay();
-		System.out.println(p2p.toString());
+//		System.out.println(p2p.toString());
 		ArrayList<Integer> list = p2p.getPathList(3);
 		Integer[] tempList = new Integer[list.size()];
 		tempList = (Integer[]) list.toArray(new Integer[list.size()]);
-		for(int i: list)
-		{
-			System.out.print(i+"  ");
-		}
+//		for(int i: list)
+//		{
+//			System.out.print(i+"  ");
+//		}
 		assertArrayEquals(new Integer[]{0,4,3},tempList );
 	}
 	
@@ -42,34 +44,34 @@ public class TestFindWayP2P {
 	public void testFindWay2() {
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
-		System.out.println(wpManager.toString());
+//		System.out.println(wpManager.toString());
 		p2p = new FindWayP2P(wpManager.getDis(), 0);
 		p2p.findWay();
-		System.out.println(p2p.getPathList(13));
-		System.out.println(p2p.getPathList(15));
+//		System.out.println(p2p.getPathList(13));
+//		System.out.println(p2p.getPathList(15));
 	}
 	
 	@Test
 	public void testBug(){
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
-		System.out.println(wpManager.toString());
+//		System.out.println(wpManager.toString());
 		p2p = new FindWayP2P(wpManager.getDis(), 1);
 		p2p.findWay();
-		System.out.println(wpManager.getWayPointList().toString());
-		System.out.println(p2p.getPathList(2));
+//		System.out.println(wpManager.getWayPointList().toString());
+//		System.out.println(p2p.getPathList(2));
 	}
 	
 	@Test
 	public void testBug0_16(){
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
-		System.out.println(wpManager.toString());
+//		System.out.println(wpManager.toString());
 		wpManager.calculateDis();
 		p2p = new FindWayP2P(wpManager.getDis(), 0);
 		p2p.findWay();
-		System.out.println(wpManager.getWayPointList().toString());
-		System.out.println(p2p.getPathList(16));
+//		System.out.println(wpManager.getWayPointList().toString());
+//		System.out.println(p2p.getPathList(16));
 	}
 
 	

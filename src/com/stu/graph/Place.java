@@ -13,21 +13,28 @@ public class Place extends Point {
 		super(x, y);
 	}
 	
-	public Place(int x, int y,Point linkPoint,String name) {
+	public Place(int x, int y,Point linkPoint) {
 		super(x, y);
 		this.linkPoint = linkPoint;
+	}
+	
+	public Place(Point originPoint,Point linkPoint) {
+		this(originPoint.x, originPoint.y,linkPoint);
+	}
+	
+	public Place(Point originPoint,Point linkPoint,String name) {
+		this(originPoint.x, originPoint.y,linkPoint);
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "("+x+","+y+")->("+linkPoint.x+","+linkPoint.y+")";
 	}
 
 	/*
 	 * setter  getter
 	 */
-	public Point getLinkPoint() {
-		return linkPoint;
-	}
-
-	public void setLinkPoint(Point linkPoint) {
-		this.linkPoint = linkPoint;
-	}
 
 	public String getName() {
 		return name;
@@ -36,7 +43,14 @@ public class Place extends Point {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public Point getLinkPoint() {
+		return linkPoint;
+	}
+
+	public void setLinkPoint(Point linkPoint) {
+		this.linkPoint = linkPoint;
+	}
 	
 	
 	

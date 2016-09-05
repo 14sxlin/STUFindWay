@@ -16,7 +16,7 @@ public class FindWayP2P {
 	 * 无向图的构造方式
 	 * @param wayPoints wayPoints中的点算的是直线距离
 	 */
-	public FindWayP2P(ArrayList<WayPoint> wayPoints,int start) {
+	public FindWayP2P(ArrayList<? extends Point> wayPoints,int start) {
 		init(wayPoints.size(),start);
 		g = new int[n][n];
 		for( int i = 0; i<rslt.length; i++){
@@ -31,7 +31,7 @@ public class FindWayP2P {
 		for(int i =0; i<n; i++)
 			for(int j = 0; j<n; j++)
 			{
-				g[i][j] = Point.lengthOf(wayPoints.get(i), wayPoints.get(i));
+				g[i][j] = Point.lengthOf(wayPoints.get(i), wayPoints.get(j));
 				g[j][i] = g[i][j];
 			}
 	}
@@ -118,4 +118,11 @@ public class FindWayP2P {
 		return str;
 	}
 
+	public int[] getRslt() {
+		return rslt;
+	}
+
+	public int[][] getG(){
+		return g;
+	}
 }

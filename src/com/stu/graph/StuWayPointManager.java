@@ -3,6 +3,11 @@ package com.stu.graph;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author LinSixin
+ *	Stu地图上面的路径点的模型管理
+ */
 public class StuWayPointManager implements Serializable{
 
 	/**
