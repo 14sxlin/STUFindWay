@@ -137,7 +137,7 @@ public class WayPointManager {
 		
 //		System.out.println("model : "+model);
 		int start_near = stuWpManager.findShortestWayPoint(startPoint);
-		placeList.add(new Place(startPoint, model.get(start_near)));
+		placeList.add(new Place(startPoint, model.get(start_near),start_near));
 //		System.out.println("start:"+start_near);
 		for(Point p:watchPoint)
 		{
@@ -167,13 +167,13 @@ public class WayPointManager {
 			{
 				dis[i][j] = p2p.getRslt()[placeList.get(j).getModelIndex()];		//找到对应终点的值
 				path[i][j] = p2p.getPathList(placeList.get(j).getModelIndex());		//保存两点之间最短的路径
-//				System.out.print("rslt: ");
-//				for(int k:p2p.getRslt())
-//					System.out.print(""+k+" ");
-//				System.out.println();
-//				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
+				System.out.print("rslt: ");
+				for(int k:p2p.getRslt())
+					System.out.print(""+k+" ");
+				System.out.println();
+				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
 			}
-//			System.out.println();
+			System.out.println();
 		}
 		
 //		Point.printMatrix(dis);

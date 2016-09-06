@@ -14,13 +14,16 @@ public class TestWayPointManager {
 	@Before
 	public void setUp() throws Exception {
 		watchPoints = new ArrayList<>();
-		watchPoints.add(new Point(233,356));
-		watchPoints.add(new Point(400,680));
-		watchPoints.add(new Point(600,200));
+//		watchPoints.add(new Point(233,356));
+//		watchPoints.add(new Point(400,680));
+//		watchPoints.add(new Point(600,200));
 		
+//		wpManager = new WayPointManager(
+//				new Point(100, 100),	//1 
+//				new Point(700,800), watchPoints);//8
 		wpManager = new WayPointManager(
-				new Point(100, 100),	//1 
-				new Point(700,800), watchPoints);//8
+				new Point(644, 415),	//1 
+				new Point(558, 662), watchPoints);//8
 		wpManager.readRouteModel("waypointmodel.data");
 	}
 

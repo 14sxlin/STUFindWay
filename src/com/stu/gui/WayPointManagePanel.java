@@ -303,14 +303,15 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 						int traceI = 0,traceJ = 0;
 						for(int i = 0;i<n;i++)
 						{
-							System.out.print(traceI+"("+i+"):  ");
-							traceJ = i;
+//							System.out.print(traceI+"("+i+"):  ");
+							traceJ = 0;
 							if(i==selectedIndex)
 							{	
 								System.out.println();
 								continue;
 							}
-							for(int j = i; j<n ; j++)
+							
+							for(int j = 0; j<n ; j++)
 							{	System.out.print(traceJ+"("+j+")  ");
 								if(j==selectedIndex)
 								{
@@ -321,7 +322,7 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 								traceJ++;
 								
 							}
-							System.out.println();
+//							System.out.println();
 							traceI++;
 							
 						}
