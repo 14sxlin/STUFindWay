@@ -1,5 +1,8 @@
 package com.stu.gui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.StuWayPointManager;
 import com.stu.graph.WayPoint;
@@ -10,7 +13,7 @@ public class TestAvaliableDialog {
 	private StuWayPointManager stuwp ; 
 	private ObjectTXTManager txtManager ;
 	private int [][] ava ;
-	public TestAvaliableDialog() {
+	public TestAvaliableDialog() throws ClassNotFoundException, FileNotFoundException, IOException {
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
 		stuwp.getWayPointList().add(new WayPoint(90, 90, "newPoint(16)"));
@@ -35,7 +38,7 @@ public class TestAvaliableDialog {
 		}
 	}
 	
-	public TestAvaliableDialog(int nothing){
+	public TestAvaliableDialog(int nothing) throws ClassNotFoundException, FileNotFoundException, IOException{
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
 		dialog = new AvaliableDialog(stuwp.getAvaliable());
@@ -58,7 +61,7 @@ public class TestAvaliableDialog {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException, IOException {
 //		new TestAvaliableDialog();
 		new TestAvaliableDialog(1);
 		

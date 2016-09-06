@@ -2,6 +2,8 @@ package com.stu.graph;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -41,7 +43,7 @@ public class TestFindWayP2P {
 	}
 	
 	@Test
-	public void testFindWay2() {
+	public void testFindWay2() throws ClassNotFoundException, FileNotFoundException, IOException {
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
 //		System.out.println(wpManager.toString());
@@ -52,7 +54,7 @@ public class TestFindWayP2P {
 	}
 	
 	@Test
-	public void testBug(){
+	public void testBug() throws ClassNotFoundException, FileNotFoundException, IOException{
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
 //		System.out.println(wpManager.toString());
@@ -63,7 +65,7 @@ public class TestFindWayP2P {
 	}
 	
 	@Test
-	public void testBug0_16(){
+	public void testBug0_16() throws ClassNotFoundException, FileNotFoundException, IOException{
 		ObjectTXTManager manager = new ObjectTXTManager("waypointmodel.data");
 		StuWayPointManager wpManager = (StuWayPointManager) manager.readObject();
 //		System.out.println(wpManager.toString());

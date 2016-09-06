@@ -1,5 +1,7 @@
 package com.stu.graph;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.stu.database.ObjectTXTManager;
@@ -60,8 +62,11 @@ public class WayPointManager {
 	/**
 	 * 读取路径模型文件,使用相应的路径模型<br/>
 	 * @param modelFileName 路径模型  使用 "waypointmodel.data"
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ClassNotFoundException 
 	 */
-	public void readRouteModel(String modelFileName){
+	public void readRouteModel(String modelFileName) throws ClassNotFoundException, FileNotFoundException, IOException{
 		objTxtManager = new ObjectTXTManager(modelFileName);
 		stuWpManager = (StuWayPointManager) objTxtManager.readObject();
 	}
@@ -99,48 +104,54 @@ public class WayPointManager {
 	 * 保存多点寻路的结果
 	 */
 	public class PathResult{
+		/**所有的路径点**/
+		public ArrayList<? extends Point> model;
 		
-		/**所有要去的地方**/
+		/**用户要去的地方**/
 		public ArrayList<Place> places;
 		
-		/**按顺序要去的点在模型中的index**/
+		/**按顺序要去的点在模型中的index 比如: 1 5 6 7 就是字面上的这么走**/
 		public int []order;
 		
 		/**按顺序要去的点之间的路径**/
 		public ArrayList<Integer> []paths;
 		
-		public PathResult(int order[],ArrayList<Integer> paths[],ArrayList<Place> places) {
+		public PathResult(int order[],ArrayList<Integer> paths[],ArrayList<Place> places,ArrayList<? extends Point> model) {
 			this.order = order;
 			this.paths = paths;
 			this.places = places;
+			this.model = model;
 		}
 	}
 	
 	/**
 	 * 计算最短路径,要经过起点,终点和参观点,最后回到起点
 	 * @param watchPoint 要经过的参观点
+	 * @return 返回的结果封装类
 	 */
 	public PathResult calcculateRouteWith(ArrayList<? extends Point> watchPoint)
 	{
+		//获取用户点击的点和相关的邻接点
 		ArrayList<Place> placeList = new ArrayList<>();
 		ArrayList<WayPoint> model = stuWpManager.getWayPointList();
 		
-		System.out.println("model : "+model);
+//		System.out.println("model : "+model);
 		int start_near = stuWpManager.findShortestWayPoint(startPoint);
 		placeList.add(new Place(startPoint, model.get(start_near)));
-		System.out.println("start:"+start_near);
+//		System.out.println("start:"+start_near);
 		for(Point p:watchPoint)
 		{
 			int tempIndex = stuWpManager.findShortestWayPoint(p);
-			placeList.add(new Place(p,model.get(tempIndex)));
+			placeList.add(new Place(p,model.get(tempIndex),tempIndex));
 		}
 		
 		int end_near = stuWpManager.findShortestWayPoint(endPoint);
-		System.out.println("end:"+end_near);
-		placeList.add(new Place(endPoint, model.get(end_near)));
+//		System.out.println("end:"+end_near);
+		placeList.add(new Place(endPoint, model.get(end_near),end_near));
 		
-		System.out.println(placeList);
+//		System.out.println(placeList);
 		
+		//获取相关点中两两之间的距离
 		int n = placeList.size();
 		int[][] dis = new int[n][n];
 		
@@ -149,17 +160,18 @@ public class WayPointManager {
 		
 		for(int i = 0; i<n; i++)
 		{	
-			p2p = new FindWayP2P(stuWpManager.getDis(), i);
+			p2p = new FindWayP2P(stuWpManager.getDis(), 
+					placeList.get(i).getModelIndex());
 			p2p.findWay();
-//			System.out.print( "lenght: ");
 			for(int j = 0; j<n; j++)
 			{
-				dis[i][j] = p2p.getRslt()[j];
-				path[i][j] = p2p.getPathList(j);
+				dis[i][j] = p2p.getRslt()[placeList.get(j).getModelIndex()];		//找到对应终点的值
+				path[i][j] = p2p.getPathList(placeList.get(j).getModelIndex());		//保存两点之间最短的路径
 //				System.out.print("rslt: ");
 //				for(int k:p2p.getRslt())
 //					System.out.print(""+k+" ");
-//				System.out.print("path: "+p2p.getPathList(j)+"   ");
+//				System.out.println();
+//				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
 			}
 //			System.out.println();
 		}
@@ -199,7 +211,7 @@ public class WayPointManager {
 		}
 		pathResult[revOrder.length-1] = path[last][0];
 		
-		return new PathResult(revOrder, pathResult, placeList);
+		return new PathResult(revOrder, pathResult, placeList,stuWpManager.getWayPointList());
 	}
 	
 	

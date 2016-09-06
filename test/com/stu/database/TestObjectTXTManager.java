@@ -2,6 +2,9 @@ package com.stu.database;
 
 import static org.junit.Assert.assertArrayEquals;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,7 +25,7 @@ public class TestObjectTXTManager {
 	@Test
 	@Ignore
 	@Deprecated
-	public void test() {
+	public void test() throws ClassNotFoundException, FileNotFoundException, IOException {
 		manager.writeObject(bg);
 		bg = new BarrierGenerator(10, 10);
 		bg.dropBarrier(1, 1);

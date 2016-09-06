@@ -2,6 +2,9 @@ package com.stu.graph;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,6 +36,7 @@ public class TestStuWayPointManager {
 			{0,0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0, 1},//14
 			{0,0,0,0,0,0,0,0,0,0, 0, 0, 0, 0, 0, 0},//15
 	};
+	
 	@Before
 	public void setUp() throws Exception {
 		txtManager = new ObjectTXTManager(fileName);
@@ -66,7 +70,7 @@ public class TestStuWayPointManager {
 
 	@Test
 	@Ignore
-	public void testSaveStuWayPointManager() {
+	public void testSaveStuWayPointManager() throws ClassNotFoundException, FileNotFoundException, IOException {
 		txtManager.writeObject(stuwp);
 		StuWayPointManager readData = (StuWayPointManager)txtManager.readObject();
 		System.out.println(exp);
@@ -75,7 +79,7 @@ public class TestStuWayPointManager {
 	
 	@Test
 	@Ignore
-	public void 整理数组(){
+	public void 整理数组() throws ClassNotFoundException, FileNotFoundException, IOException{
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
 		stuwp.calculateDis();
@@ -86,7 +90,7 @@ public class TestStuWayPointManager {
 	
 	@Test
 	@Ignore
-	public void testFindShortestIndex(){
+	public void testFindShortestIndex() throws ClassNotFoundException, FileNotFoundException, IOException{
 		txtManager = new ObjectTXTManager("waypointmodel.data");
 		stuwp = (StuWayPointManager) txtManager.readObject();
 		int start = stuwp.findShortestWayPoint(new Point(590,400));

@@ -92,6 +92,11 @@ public class FindWayP2P {
 		}
 	}
 	
+	/**
+	 * 获取模型中起点到end指定的终点最短路径
+	 * @param end
+	 * @return
+	 */
 	public ArrayList<Integer> getPathList(int end){
 		Stack<Integer> s = new Stack<Integer>();
 		ArrayList<Integer> list = new ArrayList<>();

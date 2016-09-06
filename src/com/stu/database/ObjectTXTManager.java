@@ -2,6 +2,7 @@ package com.stu.database;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,18 +38,10 @@ public class ObjectTXTManager {
 	
 	
 	@SuppressWarnings("resource")
-	public Object readObject(){
+	public Object readObject() throws ClassNotFoundException, FileNotFoundException, IOException{
 		File file = new File(filename);
 		if(!file.exists())
 			return null;
-		try {
-			return new ObjectInputStream(new FileInputStream(file)).readObject();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return new ObjectInputStream(new FileInputStream(file)).readObject();
 	}
 }

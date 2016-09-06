@@ -19,8 +19,8 @@ public class TestWayPointManager {
 		watchPoints.add(new Point(600,200));
 		
 		wpManager = new WayPointManager(
-				new Point(100, 100), 
-				new Point(700,800), watchPoints);
+				new Point(100, 100),	//1 
+				new Point(700,800), watchPoints);//8
 		wpManager.readRouteModel("waypointmodel.data");
 	}
 

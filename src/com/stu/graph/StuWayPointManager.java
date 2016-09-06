@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author LinSixin
- *	Stu地图上面的路径点的模型管理
+ * Stu地图上面的路径点的模型管理
  */
 public class StuWayPointManager implements Serializable{
 
@@ -37,6 +37,10 @@ public class StuWayPointManager implements Serializable{
 	
 	public void addWayPoint(WayPoint p){
 		wayPointList.add(p);
+	}
+	
+	public void removeWayPoint(int index){
+		wayPointList.remove(index);
 	}
 	
 	/**

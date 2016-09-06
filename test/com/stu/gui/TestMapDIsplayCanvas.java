@@ -2,6 +2,8 @@ package com.stu.gui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -29,7 +31,7 @@ public class TestMapDIsplayCanvas extends JFrame {
 	private StuWayPointManager stuWpManager;
 	
 	@Deprecated
-	public TestMapDIsplayCanvas(int mode) {
+	public TestMapDIsplayCanvas(int mode) throws ClassNotFoundException, FileNotFoundException, IOException {
 		
 		canvas = new MapDisplayCanvas(1500,1000);
 //		canvas = new MapDisplayCanvas();
@@ -63,7 +65,7 @@ public class TestMapDIsplayCanvas extends JFrame {
 	}
 	
 	
-	public TestMapDIsplayCanvas() {
+	public TestMapDIsplayCanvas() throws ClassNotFoundException, FileNotFoundException, IOException {
 		init();
 		startEndMode();
 	}
@@ -71,8 +73,11 @@ public class TestMapDIsplayCanvas extends JFrame {
 	/**
 	 * 初始化,读取路径点模型
 	 * 可以复制直接使用
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ClassNotFoundException 
 	 */
-	public void init(){
+	public void init() throws ClassNotFoundException, FileNotFoundException, IOException{
 		canvas = new MapDisplayCanvas(1500,1000);
 		objManager = new ObjectTXTManager("waypointmodel.data");
 		stuWpManager = (StuWayPointManager) objManager.readObject();
@@ -180,7 +185,7 @@ public class TestMapDIsplayCanvas extends JFrame {
 	
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException, IOException {
 		new TestMapDIsplayCanvas().setVisible(true);
 	}
 }

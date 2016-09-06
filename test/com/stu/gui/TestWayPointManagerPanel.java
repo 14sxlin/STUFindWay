@@ -18,14 +18,15 @@ public class TestWayPointManagerPanel extends JFrame{
 	}
 	
 	
-	public TestWayPointManagerPanel(String fileName) {
-		wpPanel = new WayPointManagePanel(fileName,true);
+	public TestWayPointManagerPanel(String fileName1,String fileName2) {
+		wpPanel = new WayPointManagePanel(fileName1,fileName2,true);
 		this.add(wpPanel);
 		this.setSize(1500, 1000);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	public static void main(String[] args) {
-		new TestWayPointManagerPanel("waypointmodel.data").setVisible(true);
+		new TestWayPointManagerPanel("waypointmodel.data","placemodel.data").setVisible(true);
 	}
 
 }

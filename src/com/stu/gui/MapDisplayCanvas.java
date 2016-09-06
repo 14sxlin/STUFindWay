@@ -92,7 +92,7 @@ public class MapDisplayCanvas extends Canvas {
 		if(points==null) return;
 		for(Point p : points)
 		{
-			g.setFont(new Font("Arial", Font.BOLD,15));
+			g.setFont(new Font("微软雅黑", Font.BOLD,15));
 			try{
 				g.drawString("@"+((WayPoint)p).getName(), p.x, p.y);
 			}catch(Exception e)
@@ -161,7 +161,9 @@ public class MapDisplayCanvas extends Canvas {
 	 * @param points 所有路径点
 	 * @param available 可到达数组,1表示可以直线到达,0表示不可以直线到达
 	 */
-	public void drawAvailRoute(ArrayList<WayPoint> points,int[][] available){
+	public boolean drawAvailRoute(ArrayList<WayPoint> points,int[][] available){
+		if(points==null||points.size()==0)
+			return false;
 		for(int i = 0; i<available.length; i++)
 			for(int j = i; j<available.length; j++)
 			{
@@ -170,6 +172,7 @@ public class MapDisplayCanvas extends Canvas {
 					drawBigLine(points.get(i), points.get(j));
 				}
 			}
+		return true;
 	}
 	
 	/**
@@ -179,13 +182,14 @@ public class MapDisplayCanvas extends Canvas {
 	 * 重置模式为起点模式
 	 */
 	public void clear(){
-//		if(points!=null)
-//			points.clear();
+		if(points!=null)
+			points.clear();
 		if(way!= null)
 			way.clear();
 		repaint();
 		setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
 	}
+	
 	
 	/**
 	 * 清空画布但是不清空保存的点
@@ -218,7 +222,7 @@ public class MapDisplayCanvas extends Canvas {
 		Graphics2D g = ((Graphics2D)getGraphics());
 		g.setColor(Color.red);
 		g.setStroke(new BasicStroke(2f));
-		g.setFont(new Font("Arial", Font.BOLD,15));
+		g.setFont(new Font("微软雅黑", Font.BOLD,15));
 		g.drawString(str, x, y);
 	}
 	
@@ -235,7 +239,16 @@ public class MapDisplayCanvas extends Canvas {
 		g.setStroke(new BasicStroke(2f));
 		g.drawString(str, x, y);
 	}
-
+	
+	
+	protected void drawColorString(String str,int x,int y,Color color)
+	{
+		Graphics2D g = ((Graphics2D)getGraphics());
+		g.setColor(color);
+		g.setStroke(new BasicStroke(2f));
+		g.setFont(new Font("微软雅黑", Font.BOLD,15));
+		g.drawString(str, x, y);
+	}
 	
 	
 	/*
@@ -258,9 +271,9 @@ public class MapDisplayCanvas extends Canvas {
 	public ArrayList<? extends Point> getPoints() {
 		return points;
 	}
-	@SuppressWarnings("unchecked")
+	
 	public void setPoints(ArrayList<? extends Point > points) {
-		this.points = (ArrayList<? extends Point>) points.clone();
+		this.points = new ArrayList<>(points);
 	}
 	
 	public int getMode() {
