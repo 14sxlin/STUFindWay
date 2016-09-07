@@ -99,6 +99,7 @@ public class VisitModeFrame extends JFrame {
 			cks[i]= new JCheckBox(p.getName());
 			cks[i].addActionListener(event->{
 				canvas.clearCanvas();
+				end = null;
 				drawSE();
 				visitMode = false;
 				for(int j = 0 ;j<cks.length ; j++)

@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -49,9 +50,16 @@ public class InitWindow extends JWindow implements Runnable {
 	public void run() {
 		setVisible(true); 									// 显示窗口
 		try {
-			Configuration.check();
+			this.getClass().getClassLoader();
+			InputStream in1 = getClass().getResourceAsStream(Configuration.BACKUPPLACE);
+			InputStream in2 = getClass().getResourceAsStream(Configuration.BACKWAYPOINT);
+			Configuration.check(
+					in1,
+					in2);
+			in1.close();
+			in2.close();
 			for (int i = 0; i < 100; i++) {
-				Thread.sleep(10); // 线程休眠
+				Thread.sleep(50); // 线程休眠
 				progress.setValue(progress.getValue() + 1); // 设置进度条值
 			}
 		} catch (Exception ex) {
