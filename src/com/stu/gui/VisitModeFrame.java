@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import com.stu.database.Configuration;
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.Place;
 import com.stu.graph.StuPlaceManager;
@@ -77,9 +78,9 @@ public class VisitModeFrame extends JFrame {
 	 */
 	private void init() throws ClassNotFoundException, FileNotFoundException, IOException{
 		canvas = new MapDisplayCanvas(1500,1000);
-		objManager = new ObjectTXTManager("waypointmodel.data");
+		objManager = new ObjectTXTManager(Configuration.WAYPONINTMODELPATH);
 		stuWpManager = (StuWayPointManager) objManager.readObject();
-		objManager = new ObjectTXTManager("placemodel.data");
+		objManager = new ObjectTXTManager(Configuration.PLACEMODELPATH);
 		stuPlaceManager = (StuPlaceManager) objManager.readObject();
 		watchPointPanel = new JPanel(new GridBagLayout());
 		watch = new ArrayList<>();
@@ -283,7 +284,7 @@ public class VisitModeFrame extends JFrame {
 		{
 			algor = new WayPointManager();
 			try {
-				algor.readRouteModel("waypointmodel.data");
+				algor.readRouteModel(Configuration.WAYPONINTMODELPATH);
 			} catch (ClassNotFoundException | IOException e) {
 				JOptionPane.showMessageDialog(this, "模型文件设置错误");
 			}
@@ -327,7 +328,7 @@ public class VisitModeFrame extends JFrame {
 			
 			algor = new WayPointManager();
 			try {
-				algor.readRouteModel("waypointmodel.data");
+				algor.readRouteModel(Configuration.WAYPONINTMODELPATH);
 			} catch (ClassNotFoundException | IOException e) {
 				JOptionPane.showMessageDialog(this, "模型文件设置错误");
 			}

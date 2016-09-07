@@ -1,6 +1,6 @@
 package com.stu.database;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,22 +33,4 @@ public class TestObjectTXTManager {
 		assertArrayEquals(exp.getMap(), bg.getMap());
 		System.out.println(exp.toString());
 	}
-	
-//	@Test
-//	public void test1(){
-//		manager = new ObjectTXTManager("savedMap.data");
-//		bg = (BarrierGenerator) manager.readObject();
-//		for(int i = 49;i<=53; i++)
-//		{
-//			bg.getMap()[i][27] = '0';
-//		}
-//		for(int i = 26;i<=31; i++)
-//		{
-//			bg.getMap()[57][i] = '0';
-//			bg.getMap()[64][i] = '0';
-//		}
-//		System.out.println(bg.toString());
-//		manager.writeObject(bg);
-//	}
-
 }

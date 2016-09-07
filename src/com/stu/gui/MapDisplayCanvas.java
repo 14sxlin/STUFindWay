@@ -13,18 +13,17 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import com.stu.database.Configuration;
 import com.stu.graph.Point;
 import com.stu.graph.WayPoint;
 
 @SuppressWarnings("serial")
 public class MapDisplayCanvas extends Canvas {
-	public static final String STUJPG_PATH = "/pic/stu.png";
-	public static final String STUGREY = "/pic/stu_grey.png";
-
+	
 	public static final int MODE_NOTHING = 0; 
 	public static final int MODE_ADDPOINTS = 1; 
 	public static final int MODE_SETSTARTPOINT = 2; 
-	public static final int MODE_SETENDPOINT = -1; 
+	public static final int MODE_SETENDPOINT = 3; 
 	private int mode = MODE_SETSTARTPOINT;
 	private Image image;
 	private int imwidth,imheight;
@@ -66,12 +65,6 @@ public class MapDisplayCanvas extends Canvas {
 		}
 	}
 
-	/**
-	 * 默认载入STUJPG_PATH字段指定的图片
-	 */
-	public MapDisplayCanvas() {
-		this(STUJPG_PATH);
-	}
 
 	/**
 	 * 指定图片放缩之后的大小
@@ -79,7 +72,15 @@ public class MapDisplayCanvas extends Canvas {
 	 * @param height 放缩后图片的高
 	 */
 	public MapDisplayCanvas(int width,int height) {
-		this(STUJPG_PATH,width,height);
+		try {
+			way = new ArrayList<>();
+			image = ImageIO.read(getClass().getResourceAsStream(Configuration.STUPNGPATH))
+					.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+			imwidth = width;
+			imheight = height;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -103,12 +104,12 @@ public class MapDisplayCanvas extends Canvas {
 	
 	
 	public void useGrey() throws IOException{
-		image =  ImageIO.read(getClass().getResourceAsStream(STUGREY))
+		image =  ImageIO.read(getClass().getResourceAsStream(Configuration.STUGRAYIMAGEPATH))
 				.getScaledInstance(imwidth, imheight, Image.SCALE_DEFAULT);
 		getGraphics().drawImage(image, 0, 0, this);
 	}
 	public void useColor() throws IOException{
-		image =  ImageIO.read(getClass().getResourceAsStream(STUJPG_PATH))
+		image =  ImageIO.read(getClass().getResourceAsStream(Configuration.STUPNGPATH))
 				.getScaledInstance(imwidth, imheight, Image.SCALE_DEFAULT);
 		getGraphics().drawImage(image, 0, 0, this);
 	}

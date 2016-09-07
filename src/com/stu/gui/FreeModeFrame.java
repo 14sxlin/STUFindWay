@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.stu.database.Configuration;
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.Place;
 import com.stu.graph.StuWayPointManager;
@@ -57,9 +58,9 @@ public class FreeModeFrame extends JFrame {
 	 */
 	private void init() throws ClassNotFoundException, FileNotFoundException, IOException{
 		canvas = new MapDisplayCanvas(1500,1000);
-		objManager = new ObjectTXTManager("waypointmodel.data");
+		objManager = new ObjectTXTManager(Configuration.WAYPONINTMODELPATH);
 		stuWpManager = (StuWayPointManager) objManager.readObject();
-		objManager = new ObjectTXTManager("placemodel.data");
+		objManager = new ObjectTXTManager(Configuration.PLACEMODELPATH);
 		watch = new ArrayList<>();
 		
 		JCheckBox grey = new JCheckBox("使用灰图");
@@ -130,7 +131,7 @@ public class FreeModeFrame extends JFrame {
 		{
 			algor = new WayPointManager();
 			try {
-				algor.readRouteModel("waypointmodel.data");
+				algor.readRouteModel(Configuration.WAYPONINTMODELPATH);
 			} catch (ClassNotFoundException | IOException e) {
 				JOptionPane.showMessageDialog(this, "模型文件设置错误");
 			}
@@ -157,7 +158,7 @@ public class FreeModeFrame extends JFrame {
 		}else{
 			algor = new WayPointManager();
 			try {
-				algor.readRouteModel("waypointmodel.data");
+				algor.readRouteModel(Configuration.WAYPONINTMODELPATH);
 			} catch (ClassNotFoundException | IOException e) {
 				JOptionPane.showMessageDialog(this, "模型文件设置错误");
 			}
