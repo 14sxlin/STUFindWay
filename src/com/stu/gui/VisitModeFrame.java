@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -21,7 +20,6 @@ import javax.swing.JSplitPane;
 
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.Place;
-import com.stu.graph.Point;
 import com.stu.graph.StuPlaceManager;
 import com.stu.graph.StuWayPointManager;
 import com.stu.graph.WayPoint;
@@ -33,7 +31,6 @@ public class VisitModeFrame extends JFrame {
 
 	private MapDisplayCanvas canvas;
 	private JComboBox<String> startCom,endCom;
-//	private JCheckBox addWatchChk;
 	private JButton findBtn;
 	private JPanel watchPointPanel;
 	private ObjectTXTManager objManager;
@@ -48,11 +45,11 @@ public class VisitModeFrame extends JFrame {
 	
 	private Color[] colors={
 			Color.black,
-			Color.CYAN,
+			Color.orange,
 			Color.GREEN,
 			Color.blue,
 			Color.red,
-			Color.orange,
+			Color.CYAN,
 			Color.DARK_GRAY,
 			Color.magenta,
 			Color.PINK
@@ -86,6 +83,8 @@ public class VisitModeFrame extends JFrame {
 		stuPlaceManager = (StuPlaceManager) objManager.readObject();
 		watchPointPanel = new JPanel(new GridBagLayout());
 		watch = new ArrayList<>();
+		
+		
 		GridBagConstraints con1 = new GridBagConstraints();
 		con1.gridwidth = GridBagConstraints.REMAINDER;
 		con1.fill = GridBagConstraints.HORIZONTAL;
@@ -95,7 +94,7 @@ public class VisitModeFrame extends JFrame {
 		cks = new JCheckBox[stuPlaceManager.getPlaces().size()];
 		int i = 0;
 		for(WayPoint p : stuPlaceManager.getPlaces())
-		{// TODO
+		{
 			cks[i]= new JCheckBox(p.getName());
 			cks[i].addActionListener(event->{
 				canvas.clearCanvas();
@@ -147,7 +146,6 @@ public class VisitModeFrame extends JFrame {
 		btnPanel.add(clearBtn);
 		JButton showPathBtn = new JButton("显示路径模型");
 		showPathBtn.addActionListener(e->{
-			//TODO change color
 			canvas.drawAvailRoute(stuWpManager.getWayPointList(), stuWpManager.getAvaliable(), Color.cyan,3);
 		});
 		btnPanel.add(showPathBtn);
@@ -187,7 +185,36 @@ public class VisitModeFrame extends JFrame {
 		
 		con.weightx = 0.8;
 		con.gridwidth = GridBagConstraints.REMAINDER;
-		rightPanel.add(new JLabel(""),con);
+		
+		JCheckBox grey = new JCheckBox("使用灰图");
+		
+		grey.addActionListener(e->{
+			if(grey.isSelected())
+			{
+				try {
+					canvas.useGrey();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}else{
+				try {
+					canvas.useColor();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			startCom.setSelectedIndex(0);
+			endCom.setSelectedIndex(0);
+			start = end = null;
+			for(int j = 0; j<cks.length; j++)
+			{
+				cks[j].setSelected(false);
+			}
+			
+		});
+		rightPanel.add(grey,con);
 		
 		con.weighty = 1.0;
 		con.fill = GridBagConstraints.BOTH;
@@ -205,7 +232,6 @@ public class VisitModeFrame extends JFrame {
 				);
 		split.setDividerLocation(1200);
 		
-		//TODO
 		startCom.addItemListener(e->{
 			if(canvas.getGraphics()==null)
 				return;
@@ -246,6 +272,7 @@ public class VisitModeFrame extends JFrame {
 			}
 		});
 		
+		this.setTitle("参观模式");
 		this.setLayout(new BorderLayout());
 		this.add(split,"Center");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

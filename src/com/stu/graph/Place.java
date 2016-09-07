@@ -34,7 +34,7 @@ public class Place extends Point {
 
 	@Override
 	public String toString() {
-		return "("+x+","+y+")->("+linkPoint.x+","+linkPoint.y+")";
+		return ""+modelIndex+"("+x+","+y+")->("+linkPoint.x+","+linkPoint.y+")";
 	}
 
 	/*
@@ -64,5 +64,6 @@ public class Place extends Point {
 	public void setModelIndex(int modelIndex) {
 		this.modelIndex = modelIndex;
 	}
+	
 
 }

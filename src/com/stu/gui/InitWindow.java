@@ -1,11 +1,18 @@
 package com.stu.gui;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.io.IOException;
-import java.net.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.JWindow;
 
 @SuppressWarnings("serial")
 public class InitWindow extends JWindow implements Runnable {
@@ -14,7 +21,6 @@ public class InitWindow extends JWindow implements Runnable {
 
 	public InitWindow() throws IOException {
 		Container container = getContentPane(); // 得到容器
-//		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); // 设置光标
 		Image image = ImageIO.read(getClass().getResourceAsStream("/pic/stu.jpg")); // 图片的位置
 		if (image != null) {
 			container.add(new JLabel(new ImageIcon(image)), BorderLayout.CENTER); // 增加图片

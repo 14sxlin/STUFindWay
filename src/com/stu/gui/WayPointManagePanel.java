@@ -2,9 +2,7 @@ package com.stu.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.MenuItem;
 import java.awt.Point;
-import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -29,9 +27,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.PopupMenuUI;
 
 import com.stu.database.ObjectTXTManager;
 import com.stu.graph.StuPlaceManager;
@@ -274,13 +269,6 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 		Enumeration<AbstractButton> e2 = waypointGroup.getElements();
 		while(e2.hasMoreElements())
 			e2.nextElement().setEnabled(true);
-		
-		// TODO
-//		JPanel rightPanel = new JPanel();
-//		rightPanel.setLayout(new BorderLayout());
-//		rightPanel.add(wayPointList, "Center");
-//		
-//		JPanel rightBottomPanel = new JPanel();
 		
 		
 		JSplitPane split = 

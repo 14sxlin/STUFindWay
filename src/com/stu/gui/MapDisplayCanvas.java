@@ -19,6 +19,7 @@ import com.stu.graph.WayPoint;
 @SuppressWarnings("serial")
 public class MapDisplayCanvas extends Canvas {
 	public static final String STUJPG_PATH = "/pic/stu.png";
+	public static final String STUGREY = "/pic/stu_grey.png";
 
 	public static final int MODE_NOTHING = 0; 
 	public static final int MODE_ADDPOINTS = 1; 
@@ -27,7 +28,6 @@ public class MapDisplayCanvas extends Canvas {
 	private int mode = MODE_SETSTARTPOINT;
 	private Image image;
 	private int imwidth,imheight;
-	private Graphics originG;
 	private Graphics2D g;
 	private ArrayList<? extends Point> points;	//初始化的时候要画如canvas的点
 	private ArrayList<Point> way; 				// 保存用户点击的点
@@ -44,7 +44,6 @@ public class MapDisplayCanvas extends Canvas {
 			imwidth = image.getWidth(this);
 			imheight = image.getHeight(this);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -63,7 +62,6 @@ public class MapDisplayCanvas extends Canvas {
 			imwidth = width;
 			imheight = height;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,6 +99,18 @@ public class MapDisplayCanvas extends Canvas {
 				g.drawString("!", p.x, p.y);
 			}
 		}
+	}
+	
+	
+	public void useGrey() throws IOException{
+		image =  ImageIO.read(getClass().getResourceAsStream(STUGREY))
+				.getScaledInstance(imwidth, imheight, Image.SCALE_DEFAULT);
+		getGraphics().drawImage(image, 0, 0, this);
+	}
+	public void useColor() throws IOException{
+		image =  ImageIO.read(getClass().getResourceAsStream(STUJPG_PATH))
+				.getScaledInstance(imwidth, imheight, Image.SCALE_DEFAULT);
+		getGraphics().drawImage(image, 0, 0, this);
 	}
 	
 	

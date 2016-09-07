@@ -14,11 +14,6 @@ import com.stu.database.ObjectTXTManager;
  */
 public class WayPointManager {
 
-	/**终点**/
-	private Point endPoint;
-	
-	/**起点**/
-	private Point startPoint;
 	
 	/**提供单源最短路径的算法**/
 	private FindWayP2P p2p;
@@ -112,21 +107,14 @@ public class WayPointManager {
 		ArrayList<Place> placeList = new ArrayList<>();
 		ArrayList<WayPoint> model = stuWpManager.getWayPointList();
 		
-//		System.out.println("model : "+model);
 		int start_near = stuWpManager.findShortestWayPoint(startPoint);
 		placeList.add(new Place(startPoint, model.get(start_near),start_near));
-//		System.out.println("start:"+start_near);
 		for(Point p:watchPoint)
 		{
 			int tempIndex = stuWpManager.findShortestWayPoint(p);
 			placeList.add(new Place(p,model.get(tempIndex),tempIndex));
 		}
 		
-//		int end_near = stuWpManager.findShortestWayPoint(endPoint);
-////		System.out.println("end:"+end_near);
-//		placeList.add(new Place(endPoint, model.get(end_near),end_near));
-		
-//		System.out.println(placeList);
 		
 		//获取相关点中两两之间的距离
 		int n = placeList.size();
@@ -144,20 +132,13 @@ public class WayPointManager {
 			{
 				dis[i][j] = p2p.getRslt()[placeList.get(j).getModelIndex()];		//找到对应终点的值
 				path[i][j] = p2p.getPathList(placeList.get(j).getModelIndex());		//保存两点之间最短的路径
-//				System.out.print("rslt: ");
-//				for(int k:p2p.getRslt())
-//					System.out.print(""+k+" ");
-//				System.out.println();
-//				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
 			}
-//			System.out.println();
 		}
 		
-//		Point.printMatrix(dis);
 		
 		p2ps = new FindWayPoints(dis);
 		p2ps.findWay(1);
-		int[] order = p2ps.getShortestOrder();		//这个要反转一下
+		int[] order = p2ps.getShortestOrder();		
 		int[] revOrder = new int[order.length];
 		
 		for(int i = 0; i<order.length; i++)
@@ -165,17 +146,6 @@ public class WayPointManager {
 			revOrder[order[i]] = i;
 		}
 		
-//		System.out.println("------order: ");
-//		for(int i = 0; i<order.length; i++)
-//		{
-//			System.out.print(""+order[i]+" ");
-//		}
-//		System.out.println();
-//		System.out.println("------revorder: ");
-//		for(int i = 0; i<order.length; i++)
-//		{
-//			System.out.print(""+revOrder[i]+" ");
-//		}
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer> []pathResult = new ArrayList[revOrder.length];
@@ -188,7 +158,7 @@ public class WayPointManager {
 		}
 		pathResult[revOrder.length-1] = path[last][0];
 		
-		return new PathResult(order, pathResult, placeList,stuWpManager.getWayPointList());
+		return new PathResult(revOrder, pathResult, placeList,stuWpManager.getWayPointList());
 	}
 	
 	
