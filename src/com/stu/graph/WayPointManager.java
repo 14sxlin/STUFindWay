@@ -17,9 +17,6 @@ public class WayPointManager {
 	/**终点**/
 	private Point endPoint;
 	
-	/**保存了要经过的点**/
-	private ArrayList<Point> watchPoints;
-	
 	/**起点**/
 	private Point startPoint;
 	
@@ -36,27 +33,10 @@ public class WayPointManager {
 	private ObjectTXTManager objTxtManager;
 	
 	
-	/**
-	 * 只有起点和终点,没有要求参观点
-	 * @param startPoint 起点
-	 * @param endPoint	终点
-	 */
-	public WayPointManager(Point startPoint,Point endPoint) {
-		this.startPoint = startPoint;
-		this.endPoint = endPoint;
-	}
 	
+	public WayPointManager() {
+	};
 	
-	/**
-	 * 指定了经过起点和终点,要求经过一些参观点
-	 * @param startPoint
-	 * @param endPoint
-	 * @param watchPoints
-	 */
-	public WayPointManager(Point startPoint,Point endPoint,ArrayList<Point> watchPoints) {
-		this(startPoint,endPoint);
-		this.watchPoints = watchPoints;
-	}
 	
 	
 	/**
@@ -72,6 +52,7 @@ public class WayPointManager {
 	}
 	
 	/**
+	 * 自动拟合
 	 * 根据路径模型获取两个点之间在路径模型中的最短路径,保存的是路径模型中的点的序号
 	 * @param p1
 	 * @param p2
@@ -82,21 +63,16 @@ public class WayPointManager {
 		{
 			return null;
 		}
-		int start_near = stuWpManager.findShortestWayPoint(startPoint);
-		int end_near = stuWpManager.findShortestWayPoint(endPoint);
-		p2p = new FindWayP2P(stuWpManager.getWayPointList(), start_near);
+		int start_near = stuWpManager.findShortestWayPoint(p1);
+		int end_near = stuWpManager.findShortestWayPoint(p2);
+		p2p = new FindWayP2P(stuWpManager.getDis(), start_near);
 		p2p.findWay();
 		return p2p.getPathList(end_near);
 	}
 	
-	/**
-	 * 计算起点和终点的最短路径
-	 * @return 返回路径的线性表,如果两个点距离小于100,则返回null
-	 */
-	public ArrayList<Integer> calculateRouteS2E(){
-		return calculateRouteP2P(startPoint, endPoint);
+	public int findNearPointIndex(Point origin ) {
+		return stuWpManager.findShortestWayPoint(origin);
 	}
-	
 	
 	/**
 	 * 
@@ -125,11 +101,12 @@ public class WayPointManager {
 	}
 	
 	/**
-	 * 计算最短路径,要经过起点,终点和参观点,最后回到起点
+	 * 计算最短路径,要经过起点和参观点,最后回到起点
+	 * @param startPoint 起点
 	 * @param watchPoint 要经过的参观点
 	 * @return 返回的结果封装类
 	 */
-	public PathResult calcculateRouteWith(ArrayList<? extends Point> watchPoint)
+	public PathResult calcculateRouteWith(WayPoint startPoint,ArrayList<? extends Point> watchPoint)
 	{
 		//获取用户点击的点和相关的邻接点
 		ArrayList<Place> placeList = new ArrayList<>();
@@ -145,9 +122,9 @@ public class WayPointManager {
 			placeList.add(new Place(p,model.get(tempIndex),tempIndex));
 		}
 		
-		int end_near = stuWpManager.findShortestWayPoint(endPoint);
-//		System.out.println("end:"+end_near);
-		placeList.add(new Place(endPoint, model.get(end_near),end_near));
+//		int end_near = stuWpManager.findShortestWayPoint(endPoint);
+////		System.out.println("end:"+end_near);
+//		placeList.add(new Place(endPoint, model.get(end_near),end_near));
 		
 //		System.out.println(placeList);
 		
@@ -167,13 +144,13 @@ public class WayPointManager {
 			{
 				dis[i][j] = p2p.getRslt()[placeList.get(j).getModelIndex()];		//找到对应终点的值
 				path[i][j] = p2p.getPathList(placeList.get(j).getModelIndex());		//保存两点之间最短的路径
-				System.out.print("rslt: ");
-				for(int k:p2p.getRslt())
-					System.out.print(""+k+" ");
-				System.out.println();
-				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
+//				System.out.print("rslt: ");
+//				for(int k:p2p.getRslt())
+//					System.out.print(""+k+" ");
+//				System.out.println();
+//				System.out.println("path from "+placeList.get(i).getModelIndex()+" to "+placeList.get(j).getModelIndex()+": "+path[i][j]+"   ");
 			}
-			System.out.println();
+//			System.out.println();
 		}
 		
 //		Point.printMatrix(dis);
@@ -188,17 +165,17 @@ public class WayPointManager {
 			revOrder[order[i]] = i;
 		}
 		
-		System.out.println("------order: ");
-		for(int i = 0; i<order.length; i++)
-		{
-			System.out.print(""+order[i]+" ");
-		}
-		System.out.println();
-		System.out.println("------revorder: ");
-		for(int i = 0; i<order.length; i++)
-		{
-			System.out.print(""+revOrder[i]+" ");
-		}
+//		System.out.println("------order: ");
+//		for(int i = 0; i<order.length; i++)
+//		{
+//			System.out.print(""+order[i]+" ");
+//		}
+//		System.out.println();
+//		System.out.println("------revorder: ");
+//		for(int i = 0; i<order.length; i++)
+//		{
+//			System.out.print(""+revOrder[i]+" ");
+//		}
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer> []pathResult = new ArrayList[revOrder.length];
@@ -211,7 +188,7 @@ public class WayPointManager {
 		}
 		pathResult[revOrder.length-1] = path[last][0];
 		
-		return new PathResult(revOrder, pathResult, placeList,stuWpManager.getWayPointList());
+		return new PathResult(order, pathResult, placeList,stuWpManager.getWayPointList());
 	}
 	
 	

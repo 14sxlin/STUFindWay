@@ -19,7 +19,7 @@ import com.stu.graph.WayPoint;
 @SuppressWarnings("serial")
 public class MapDisplayCanvas extends Canvas {
 	public static final String STUJPG_PATH = "/pic/stu.png";
-//	public static final String STUJPG_PATH = "/pic/stu.jpg";
+
 	public static final int MODE_NOTHING = 0; 
 	public static final int MODE_ADDPOINTS = 1; 
 	public static final int MODE_SETSTARTPOINT = 2; 
@@ -27,6 +27,7 @@ public class MapDisplayCanvas extends Canvas {
 	private int mode = MODE_SETSTARTPOINT;
 	private Image image;
 	private int imwidth,imheight;
+	private Graphics originG;
 	private Graphics2D g;
 	private ArrayList<? extends Point> points;	//初始化的时候要画如canvas的点
 	private ArrayList<Point> way; 				// 保存用户点击的点
@@ -130,9 +131,21 @@ public class MapDisplayCanvas extends Canvas {
 	 * @param shortestOrder 经过的点
 	 */
 	public void drawResultLine(ArrayList<WayPoint> points,ArrayList<Integer> shortestOrder){
+		drawResultLine(points, shortestOrder, Color.blue, 3);
+	}
+	
+	
+	/**
+	 * 在地图上标注路径
+	 * @param point 路径点的模型
+	 * @param shortestOrder 经过的点
+	 * @param color
+	 * @param lineSize
+	 */
+	public void drawResultLine(ArrayList<WayPoint> points,ArrayList<Integer> shortestOrder,Color color,float lineSize){
 		Graphics2D g = (Graphics2D) getGraphics();
-		g.setColor(Color.blue);
-		g.setStroke(new BasicStroke(3));
+		g.setColor(color);
+		g.setStroke(new BasicStroke(lineSize));
 		Point lastPoint = points.get(shortestOrder.get(0));
 		
 		
@@ -144,17 +157,53 @@ public class MapDisplayCanvas extends Canvas {
 		}
 	}
 	
+	
 	/**
 	 * 画线 粗细为3 刚刚好
+	 * 颜色是蓝色
 	 * @param p1
 	 * @param p2
 	 */
-	public void drawBigLine(Point p1,Point p2){
+	public void drawLineBlue_3(Point p1,Point p2){
+		drawLineColorSize(p1, p2, Color.blue, 3);
+	}
+	
+	/**
+	 * 
+	 * @param p1
+	 * @param p2
+	 * @param color 颜色
+	 * @param lineSize 线的粗细
+	 */
+	public void drawLineColorSize(Point p1,Point p2,Color color,float lineSize){
 		Graphics2D g = (Graphics2D) getGraphics();
-		g.setColor(Color.blue);
-		g.setStroke(new BasicStroke(3));
+		g.setColor(color);
+		g.setStroke(new BasicStroke(lineSize));
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 	}
+	
+	/**
+	 * 
+	 * @param points
+	 * @param available
+	 * @param color 颜色
+	 * @param lineSize 线的粗细
+	 * @return
+	 */
+	public boolean drawAvailRoute(ArrayList<WayPoint> points,int[][] available,Color color,float lineSize){
+		if(points==null||points.size()==0)
+			return false;
+		for(int i = 0; i<available.length; i++)
+			for(int j = i; j<available.length; j++)
+			{
+				if(available[i][j]==1)
+				{
+					drawLineColorSize(points.get(i), points.get(j), color, lineSize);
+				}
+			}
+		return true;
+	}
+	
 	
 	/**
 	 * 画出路线模型
@@ -169,7 +218,7 @@ public class MapDisplayCanvas extends Canvas {
 			{
 				if(available[i][j]==1)
 				{
-					drawBigLine(points.get(i), points.get(j));
+					drawLineBlue_3(points.get(i), points.get(j));
 				}
 			}
 		return true;
@@ -195,6 +244,8 @@ public class MapDisplayCanvas extends Canvas {
 	 * 清空画布但是不清空保存的点
 	 */
 	public void clearCanvas(){
+		
+		getGraphics().drawImage(image, 0, 0, this);
 		
 	}
 	
@@ -247,6 +298,15 @@ public class MapDisplayCanvas extends Canvas {
 		g.setColor(color);
 		g.setStroke(new BasicStroke(2f));
 		g.setFont(new Font("微软雅黑", Font.BOLD,15));
+		g.drawString(str, x, y);
+	}
+	
+	protected void drawColorString(String str,int x,int y,Color color,int fontSize)
+	{
+		Graphics2D g = ((Graphics2D)getGraphics());
+		g.setColor(color);
+		g.setStroke(new BasicStroke(2f));
+		g.setFont(new Font("微软雅黑", Font.BOLD,fontSize));
 		g.drawString(str, x, y);
 	}
 	

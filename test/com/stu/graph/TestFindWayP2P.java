@@ -75,6 +75,7 @@ public class TestFindWayP2P {
 //		System.out.println(wpManager.getWayPointList().toString());
 //		System.out.println(p2p.getPathList(16));
 	}
+	
 
 	
 	

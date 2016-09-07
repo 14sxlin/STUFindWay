@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -283,7 +284,10 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 		
 		
 		JSplitPane split = 
-				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, canvas,wayPointList );
+				new JSplitPane(
+						JSplitPane.HORIZONTAL_SPLIT, 
+						canvas,
+						new JScrollPane(wayPointList) );
 		split.setDividerLocation(canvas.getImwidth()-200);
 		
 		menuItemActionListener = new ActionListener() {
@@ -295,6 +299,7 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 				{
 					if(mode==WAYPOINT_MODE)
 					{
+						lastSelected = null;
 						listModel.remove(selectedIndex);
 						stuWpManager.removeWayPoint(selectedIndex);
 						int n = stuWpManager.getAvaliable().length;
@@ -303,16 +308,14 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 						int traceI = 0,traceJ = 0;
 						for(int i = 0;i<n;i++)
 						{
-//							System.out.print(traceI+"("+i+"):  ");
 							traceJ = 0;
 							if(i==selectedIndex)
 							{	
-								System.out.println();
 								continue;
 							}
 							
 							for(int j = 0; j<n ; j++)
-							{	System.out.print(traceJ+"("+j+")  ");
+							{	
 								if(j==selectedIndex)
 								{
 									continue;
@@ -322,14 +325,9 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 								traceJ++;
 								
 							}
-//							System.out.println();
 							traceI++;
 							
 						}
-						com.stu.graph.Point.printMatrix(oldava);
-						System.out.println("------------------");
-						com.stu.graph.Point.printMatrix(newava);
-						System.out.println("------------------");
 						stuWpManager.setAvaliable(newava);
 						canvas.setPoints(stuWpManager.getWayPointList());
 						canvas.repaint();
@@ -338,7 +336,7 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 					{
 						listModel.remove(selectedIndex);
 						stuPlaceManager.removePlace(selectedIndex);
-						canvas.setPoints(stuWpManager.getWayPointList());
+						canvas.setPoints(stuPlaceManager.getPlaces());
 						canvas.repaint();
 					}
 				}
@@ -360,13 +358,12 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				wayPointList.setSelectedIndex(wayPointList.locationToIndex(new Point(e.getX(), e.getY())));
+				WayPoint selected = selectedItem(wayPointList.getSelectedIndex());
 				if(lastSelected!=null)
 					canvas.drawColorString("@"+lastSelected.getName(), lastSelected.x, lastSelected.y, Color.red);
-				WayPoint selected = selectedItem(wayPointList.getSelectedIndex());
 				assert selected!=null;
 				canvas.drawColorString("@"+selected.getName(), selected.x, selected.y, Color.blue);
 				lastSelected = selected;
-				
 				if (e.getButton()==MouseEvent.BUTTON3) {
 					pop.show(e.getComponent(), e.getX(), e.getY());
 				}
@@ -599,6 +596,7 @@ public class WayPointManagePanel extends JPanel implements ActionListener{
 			if(AvaliableDialog.finish)
 				stuWpManager.setAvaliable(ava);
 		}
+		
 	}
 
 	private WayPoint selectedItem(int index){

@@ -5,37 +5,41 @@ import java.util.Stack;
 
 public class FindWayP2P {
 
-	public static final int INF = 9999999;
+	public static final int INF = 99999999;
 	private int[] rslt;
 	private boolean[] been;
 	private int[] path;
 	private int[][] g ; 
 	private int start;
 	private int n;
+	
 	/**
-	 * 无向图的构造方式
+	 * 无向图的构造方式 ,认为点与点之间据可达
+	 * 注意 如果要使用可达数组,就别用这个构造方法
 	 * @param wayPoints wayPoints中的点算的是直线距离
 	 */
+	@Deprecated
 	public FindWayP2P(ArrayList<? extends Point> wayPoints,int start) {
 		init(wayPoints.size(),start);
 		g = new int[n][n];
-		for( int i = 0; i<rslt.length; i++){
-			rslt[i] = INF;
-			been[i] = false;
-		}
 		for(int i =0; i<n; i++)
 			for(int j = 0; j<n; j++)
 			{
 				g[i][j]  = INF;
 			}
 		for(int i =0; i<n; i++)
-			for(int j = 0; j<n; j++)
+			for(int j = i+1; j<n; j++)
 			{
 				g[i][j] = Point.lengthOf(wayPoints.get(i), wayPoints.get(j));
 				g[j][i] = g[i][j];
 			}
+		
 	}
 	
+	/**
+	 * @param g
+	 * @param start
+	 */
 	public FindWayP2P(int[][] g,int start) {
 		init(g.length,start);
 		this.g= g;

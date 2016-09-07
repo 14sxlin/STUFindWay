@@ -13,7 +13,7 @@ public class TestWayPointManagerPanel extends JFrame{
 	public TestWayPointManagerPanel() {
 		wpPanel = new WayPointManagePanel();
 		this.add(wpPanel);
-		this.setSize(1500, 1000);
+		this.setSize(1500, 1200);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	

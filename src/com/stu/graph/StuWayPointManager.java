@@ -15,7 +15,7 @@ public class StuWayPointManager implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final int INF = 99999999;
+	public static final int INF = FindWayP2P.INF;
 	private int dis[][];
 	private int available[][];
 	

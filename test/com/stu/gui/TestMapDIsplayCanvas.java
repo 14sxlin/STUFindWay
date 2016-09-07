@@ -72,7 +72,6 @@ public class TestMapDIsplayCanvas extends JFrame {
 	
 	/**
 	 * 初始化,读取路径点模型
-	 * 可以复制直接使用
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
@@ -157,7 +156,7 @@ public class TestMapDIsplayCanvas extends JFrame {
 						canvas.drawBigStirng("E", e.getX(), e.getY());
 						if(Point.lengthOf(clickStart, clickEnd)<100)
 						{
-							canvas.drawBigLine(clickStart, clickEnd);
+							canvas.drawLineBlue_3(clickStart, clickEnd);
 							canvas.setMode(MapDisplayCanvas.MODE_SETSTARTPOINT);
 							return;
 						}
@@ -167,8 +166,8 @@ public class TestMapDIsplayCanvas extends JFrame {
 						System.out.println("end = "+end);
 						
 						ArrayList<Integer> path = p2p.getPathList(end);
-						canvas.drawBigLine(clickStart, stuWpManager.getWayPointList().get(start));
-						canvas.drawBigLine(new Point(e.getX(),e.getY()), stuWpManager.getWayPointList().get(end));
+						canvas.drawLineBlue_3(clickStart, stuWpManager.getWayPointList().get(start));
+						canvas.drawLineBlue_3(new Point(e.getX(),e.getY()), stuWpManager.getWayPointList().get(end));
 						canvas.drawResultLine(stuWpManager.getWayPointList(), path);
 						
 						System.out.println("path = "+path.toString());
