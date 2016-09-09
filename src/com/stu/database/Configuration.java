@@ -24,6 +24,7 @@ public class Configuration{
 			f1.createNewFile();
 			FileOutputStream outputStream = new FileOutputStream(f1);
 			byte[] b = new byte[place.available()];
+			place.read(b);
 			outputStream.write(b);
 			outputStream.flush();
 			outputStream.close();
